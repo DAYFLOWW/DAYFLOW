@@ -1,20 +1,12 @@
-# DAYFLOW v2
+# DAYFLOW v3
 
-Versión web progresiva de DAYFLOW.
+Actualización de DAYFLOW con calendario mensual, tareas por duración o por horario fijo, aviso de solapamientos, propuestas de agenda con revisión de conflictos y soporte para turnos de trabajo nocturnos.
 
 ## Publicar en GitHub Pages
-1. Abre el repositorio de DAYFLOW.
-2. Sube estos cuatro archivos a la raíz del repositorio y acepta reemplazar `index.html`, `manifest.webmanifest`, `sw.js` e `icon.svg`.
-3. Espera a que GitHub Pages publique los cambios.
-4. En el iPhone, abre la web en Safari. Si aparece la versión anterior, cierra la app y recarga la página; el service worker usa una caché nueva `dayflow-v2-cache`.
+1. Descomprime el ZIP.
+2. Sube los archivos `index.html`, `manifest.webmanifest`, `icon.svg` y `sw.js` a la raíz del repositorio existente.
+3. Confirma los cambios en la rama `main`.
+4. Abre la página publicada y recarga. El service worker usa una caché nueva (`dayflow-v3-cache`).
 
-## Funciones
-- Calendario mensual para elegir fecha.
-- Tareas de 5 a 1440 minutos.
-- Horario fijo opcional de inicio y fin.
-- Repetición mensual por día del mes.
-- Horario de trabajo semanal.
-- Propuesta de agenda que requiere aprobación.
-- Exportar/importar copia de seguridad local.
-
-Los datos se guardan en `localStorage` en cada dispositivo y navegador. No hay sincronización entre dispositivos, notificaciones garantizadas ni IA conversacional avanzada en esta versión.
+## Datos
+Las tareas y el horario se guardan en el almacenamiento local del navegador. Exporta una copia de seguridad antes de limpiar datos del navegador o cambiar de dispositivo. GitHub Pages publica los archivos de la aplicación, no debería publicar los datos guardados localmente.
