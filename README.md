@@ -1,12 +1,20 @@
-# DAYFLOW v3
+# DAYFLOW v4
 
-Actualización de DAYFLOW con calendario mensual, tareas por duración o por horario fijo, aviso de solapamientos, propuestas de agenda con revisión de conflictos y soporte para turnos de trabajo nocturnos.
+Organizador personal web, compatible con GitHub Pages.
 
-## Publicar en GitHub Pages
-1. Descomprime el ZIP.
-2. Sube los archivos `index.html`, `manifest.webmanifest`, `icon.svg` y `sw.js` a la raíz del repositorio existente.
-3. Confirma los cambios en la rama `main`.
-4. Abre la página publicada y recarga. El service worker usa una caché nueva (`dayflow-v3-cache`).
+## Cambios de esta versión
+- Horarios de trabajo como franjas reutilizables: configura horas una vez y selecciona varios días.
+- Se pueden añadir varias franjas semanales, incluso distintas franjas el mismo día.
+- Los cambios en los días no vuelven a dibujar el formulario mientras se editan, evitando reinicios de las horas.
+- Admite turnos nocturnos como 22:00–06:00, incluyendo la parte del turno que cae en el día siguiente.
+- Las tareas de prioridad alta que ya tienen hora asignada quedan protegidas en las propuestas.
+- Las tareas restantes pueden recolocarse usando su duración actual, incluso si antes tenían un horario concreto.
+- Si no hay hueco para todas las tareas, la aplicación impide aceptar una propuesta incompleta.
+- Exportación/importación de copias compatible con los formatos anteriores de DAYFLOW.
+- Service worker actualizado para renovar la caché.
+
+## Publicación
+Sube `index.html`, `manifest.webmanifest`, `icon.svg` y `sw.js` a la raíz del repositorio GitHub Pages y confirma los cambios.
 
 ## Datos
-Las tareas y el horario se guardan en el almacenamiento local del navegador. Exporta una copia de seguridad antes de limpiar datos del navegador o cambiar de dispositivo. GitHub Pages publica los archivos de la aplicación, no debería publicar los datos guardados localmente.
+Las tareas y horarios se guardan en `localStorage` del navegador. No se sincronizan automáticamente entre dispositivos. Exporta una copia de seguridad antes de borrar datos o cambiar de navegador.
