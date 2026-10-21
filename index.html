@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111311">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DAYFLOW">
+<title>Dayflow — Mi día</title>
+<style>
+:root{color-scheme:dark;--bg:#101210;--panel:#191c19;--panel2:#222622;--line:#303630;--text:#f4f5f1;--muted:#a2aaa0;--accent:#c6f36b;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+main{max-width:720px;margin:auto;padding:24px 16px 100px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.brand{font-size:13px;letter-spacing:.18em;color:var(--accent);font-weight:800}.date{color:var(--muted);font-size:13px;margin-top:8px}.pill{border:1px solid var(--line);border-radius:99px;padding:8px 11px;font-size:12px;color:var(--muted)}
+h1{font-size:34px;letter-spacing:-.04em;margin:0 0 8px}h2{font-size:18px;margin:0}.sub{color:var(--muted);margin:0 0 24px;font-size:14px;line-height:1.5}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}.stat .num{font-size:26px;font-weight:750;margin-top:8px}.label{font-size:12px;color:var(--muted)}
+.progress{height:5px;background:var(--line);border-radius:10px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:var(--accent);width:0}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:26px 0 12px}.sectionhead small{color:var(--muted)}
+.tasklist{display:flex;flex-direction:column;gap:10px}.task{display:flex;align-items:flex-start;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}.check{appearance:none;flex:0 0 21px;width:21px;height:21px;border:1px solid #667064;border-radius:7px;margin:2px 0 0;cursor:pointer}.check:checked{background:var(--accent);border-color:var(--accent)}.check:checked:after{content:"✓";display:block;color:#101210;text-align:center;font-weight:900;line-height:19px}.taskbody{min-width:0;flex:1}.taskname{font-weight:650;overflow-wrap:anywhere}.task.done .taskname{text-decoration:line-through;color:var(--muted)}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:12px}.tag{border-radius:7px;background:var(--panel2);padding:4px 7px}.tag.high{color:#ffb6a0}.delete{border:0;background:transparent;color:var(--muted);font-size:20px;cursor:pointer;padding:0 3px}
+.composer{display:flex;gap:8px;margin-top:12px}.composer input,.field input,.field select{width:100%;background:#101210;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:13px;font:inherit;min-width:0}.composer input{flex:1}.btn{border:0;border-radius:12px;background:var(--accent);color:#14170f;font-weight:750;padding:12px 15px;cursor:pointer;font:inherit}.btn:disabled{opacity:.45}.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}.hint{font-size:12px;line-height:1.5;color:var(--muted);margin-top:9px}
+.fields{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;margin-top:10px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 6px 3px}.field input,.field select{padding:11px 9px;font-size:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.proposal{margin-top:14px;border:1px solid #596c3c;background:#1b2215;border-radius:15px;padding:15px}.proposal h3{margin:0 0 8px;font-size:15px}.proposal p{color:#d4ddca;font-size:13px;line-height:1.5}.proposalrow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #36402c;font-size:13px}.proposalrow:last-child{border:0}.empty{border:1px dashed var(--line);border-radius:14px;padding:22px;color:var(--muted);text-align:center;font-size:14px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#101210ed;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:26px;color:var(--muted);font-size:12px;backdrop-filter:blur(16px)}nav span:first-child{color:var(--accent)}
+@media(max-width:440px){main{padding:20px 14px 100px}.fields{grid-template-columns:1fr 1fr}.fields .field:first-child{grid-column:1/-1}h1{font-size:30px}.composer .btn{padding:11px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><div><div class="brand">DAYFLOW</div><div class="date" id="todayDate"></div></div><div class="pill">● Solo en este dispositivo</div></div>
+  <h1>Tu día, a tu manera.</h1>
+  <p class="sub">Añade lo que tienes pendiente. Después podrás revisar una propuesta para organizarlo.</p>
+  <div class="stats">
+    <div class="stat"><div class="label">TAREAS PENDIENTES</div><div class="num" id="pendingCount">0</div><div class="progress"><span id="progressBar"></span></div></div>
+    <div class="stat"><div class="label">COMPLETADAS HOY</div><div class="num" id="doneCount">0</div><div class="label" style="margin-top:8px">Un paso cada vez.</div></div>
+  </div>
+
+  <div class="sectionhead"><h2>Captura rápida</h2><small>Texto o dictado</small></div>
+  <div class="panel">
+    <form id="taskForm">
+      <div class="composer"><input id="taskTitle" placeholder="Ej. estudiar una hora" autocomplete="off" required maxlength="160"><button class="btn" type="submit">Añadir</button></div>
+      <div class="fields">
+        <div class="field"><label for="taskDate">DÍA</label><input id="taskDate" type="date" required></div>
+        <div class="field"><label for="taskDuration">DURACIÓN</label><select id="taskDuration"><option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>1 hora</option><option value="90">1 h 30</option><option value="120">2 horas</option><option value="180">3 horas</option></select></div>
+        <div class="field"><label for="taskPriority">PRIORIDAD</label><select id="taskPriority"><option value="Normal">Normal</option><option value="Alta">Alta</option><option value="Baja">Baja</option></select></div>
+      </div>
+      <div class="actions"><button type="button" class="btn secondary" id="voiceBtn">🎙 Dictar tarea</button><button type="button" class="btn ghost" id="planBtn">Proponer mi agenda</button></div>
+      <div class="hint" id="voiceHint">El dictado depende del navegador y de los permisos del micrófono. También puedes usar el micrófono del teclado del iPhone.</div>
+    </form>
+  </div>
+
+  <div class="sectionhead"><h2>Mis tareas</h2><small id="taskDateLabel">Hoy</small></div>
+  <div id="taskList" class="tasklist"></div>
+  <div id="proposal" class="proposal" hidden></div>
+  <p class="hint">Privacidad: esta primera versión guarda las tareas en el almacenamiento local del navegador. No crea una cuenta ni envía tus tareas a un servidor. Si borras los datos del navegador, podrías perderlas.</p>
+</main>
+<nav><span>◷ Mi día</span><span>✓ Tareas</span><span>✦ Asistente (próximamente)</span></nav>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const today = new Date();
+  const localDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const pretty = s => new Date(s+'T12:00:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  $('todayDate').textContent = pretty(localDate(today));
+  $('taskDate').value = localDate(today);
+  let tasks = [];
+  try { tasks = JSON.parse(localStorage.getItem('dayflow_tasks_v1') || '[]'); if(!Array.isArray(tasks)) tasks=[]; } catch(e) { tasks=[]; }
+  let currentProposal = null;
+  const save = () => { try { localStorage.setItem('dayflow_tasks_v1', JSON.stringify(tasks)); } catch(e) { alert('No se pudieron guardar los cambios en este navegador.'); } };
+  const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function render() {
+    const date = $('taskDate').value || localDate(today);
+    const list = tasks.filter(t=>t.date===date).sort((a,b)=>(a.done-b.done) || ({Alta:0,Normal:1,Baja:2}[a.priority]-{Alta:0,Normal:1,Baja:2}[b.priority]));
+    $('taskDateLabel').textContent = date===localDate(today) ? 'Hoy' : pretty(date);
+    $('taskList').innerHTML = list.length ? list.map(t=>`<div class="task ${t.done?'done':''}">
+      <input class="check" type="checkbox" data-check="${t.id}" ${t.done?'checked':''} aria-label="Marcar como completada">
+      <div class="taskbody"><div class="taskname">${esc(t.title)}</div><div class="meta"><span class="tag">${t.duration} min</span><span class="tag ${t.priority==='Alta'?'high':''}">${esc(t.priority)}</span>${t.time?`<span class="tag">${esc(t.time)}</span>`:''}</div></div>
+      <button class="delete" data-delete="${t.id}" aria-label="Eliminar tarea">×</button></div>`).join('') : '<div class="empty">No tienes tareas para este día.<br>Añade una arriba para empezar.</div>';
+    const pending = tasks.filter(t=>!t.done).length, done = tasks.filter(t=>t.done).length;
+    $('pendingCount').textContent=pending; $('doneCount').textContent=done;
+    $('progressBar').style.width=(tasks.length ? done/tasks.length*100 : 0)+'%';
+    document.querySelectorAll('[data-check]').forEach(el=>el.addEventListener('change',()=>{const t=tasks.find(t=>t.id===el.dataset.check);if(t){t.done=el.checked;save();render();}}));
+    document.querySelectorAll('[data-delete]').forEach(el=>el.addEventListener('click',()=>{tasks=tasks.filter(t=>t.id!==el.dataset.delete);save();render();}));
+  }
+  $('taskForm').addEventListener('submit',e=>{
+    e.preventDefault(); const title=$('taskTitle').value.trim(); if(!title)return;
+    tasks.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),title,date:$('taskDate').value||localDate(today),duration:Number($('taskDuration').value),priority:$('taskPriority').value,done:false,time:''});
+    save(); $('taskTitle').value=''; $('proposal').hidden=true; currentProposal=null; render(); $('taskTitle').focus();
+  });
+  $('taskDate').addEventListener('change',()=>{ $('proposal').hidden=true; render(); });
+  let recognition;
+  $('voiceBtn').addEventListener('click',()=>{
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SpeechRecognition){$('voiceHint').textContent='El dictado directo no está disponible en este navegador. En iPhone, toca el micrófono del teclado para dictar en el campo de texto.';return;}
+    try{
+      recognition=new SpeechRecognition(); recognition.lang='es-ES'; recognition.interimResults=false; recognition.maxAlternatives=1;
+      $('voiceHint').textContent='Escuchando… habla ahora.';
+      recognition.onresult=e=>{$('taskTitle').value=e.results[0][0].transcript;$('voiceHint').textContent='Texto reconocido. Revisa la tarea y pulsa Añadir.';$('taskTitle').focus();};
+      recognition.onerror=()=>{$('voiceHint').textContent='No se pudo usar el micrófono. Comprueba los permisos o utiliza el dictado del teclado.';};
+      recognition.onend=()=>{if($('voiceHint').textContent==='Escuchando… habla ahora.')$('voiceHint').textContent='Si no se ha reconocido tu voz, utiliza el dictado del teclado del iPhone.';};
+      recognition.start();
+    }catch(e){$('voiceHint').textContent='No se pudo iniciar el dictado. Prueba con el micrófono del teclado.';}
+  });
+  function makeProposal(){
+    const date=$('taskDate').value||localDate(today);
+    const dayTasks=tasks.filter(t=>t.date===date&&!t.done).sort((a,b)=>({Alta:0,Normal:1,Baja:2}[a.priority]-{Alta:0,Normal:1,Baja:2}[b.priority]));
+    if(!dayTasks.length){$('proposal').hidden=false;$('proposal').innerHTML='<h3>No hay tareas pendientes</h3><p>Añade tareas para generar una propuesta.</p>';return;}
+    // MVP planner: suggest a sequence from 09:00, with 10-minute breaks; does not know fixed commitments yet.
+    let mins=9*60; const rows=[];
+    dayTasks.forEach(t=>{const start=mins; const end=mins+t.duration; rows.push({id:t.id,title:t.title,start,end,duration:t.duration,priority:t.priority});mins=end+10;});
+    currentProposal=rows;
+    $('proposal').hidden=false;
+    $('proposal').innerHTML='<h3>Propuesta para '+esc(pretty(date))+'</h3><p>Orden sugerido por prioridad, con pausas de 10 minutos. Aún no conoce tus compromisos fijos: revisa que estos horarios te vayan bien antes de aceptar.</p>'+rows.map(r=>`<div class="proposalrow"><span>${esc(fmt(r.start))}–${esc(fmt(r.end))} · ${esc(r.title)}</span><span>${r.duration}m</span></div>`).join('')+'<div class="actions"><button class="btn" id="acceptPlan">Aceptar propuesta</button><button class="btn secondary" id="rejectPlan">Rechazar</button></div>';
+    $('acceptPlan').addEventListener('click',()=>{rows.forEach(r=>{const t=tasks.find(t=>t.id===r.id);if(t)t.time=fmt(r.start)+'–'+fmt(r.end);});save();$('proposal').hidden=true;render();});
+    $('rejectPlan').addEventListener('click',()=>{$('proposal').hidden=true;currentProposal=null;});
+  }
+  function fmt(m){return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+  $('planBtn').addEventListener('click',makeProposal);
+  render();
+})();
+</script>
+<script>if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {})); }</script>
+</body>
+</html>
