@@ -4,7 +4,7 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#11101d",
-  "theme_color": "#17142b",
-  "description": "Tu organizador personal: calendario, tareas y horarios."
+  "background_color": "#f4f6fb",
+  "theme_color": "#7567f8",
+  "description": "Tu organizador personal con tareas, descanso y recordatorios."
 }
