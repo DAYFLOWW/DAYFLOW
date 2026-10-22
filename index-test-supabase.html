@@ -57,7 +57,7 @@ body{background:radial-gradient(ellipse at 5% 0%,#ffe2e9 0,transparent 34%),radi
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (()=>{
-const SUPABASE_URL='https://xwljssawkliiiealblri.supabase.co';
+const SUPABASE_URL='https://xwljssawkliiiealblri.supabase.co/rest/v1/';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_zc2V47rcvBlLTDj40UAiIQ_dtd1Wb5c';
 let supabaseClient=null, cloudUser=null, cloudReady=false, remoteSaveTimer=null, applyingRemote=false;
 const $=id=>document.getElementById(id); const pad=n=>String(n).padStart(2,'0'); const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; const parseDate=s=>new Date(s+'T12:00:00'); const today=new Date(); let selectedDate=dateKey(today); let viewMonth=new Date(today.getFullYear(),today.getMonth(),1); let editingId=null; let proposalRows=null; let recognition=null;
